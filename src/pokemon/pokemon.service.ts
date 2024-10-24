@@ -4,6 +4,8 @@ import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { isValidObjectId, Model } from 'mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
+import { handleExceptions } from 'src/common/utils/handle.exceptions.utils';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Injectable()
 export class PokemonService {
@@ -20,12 +22,20 @@ export class PokemonService {
       const pokemon = await this.pokemonModel.create(createPokemonDto);
       return pokemon;
     } catch (error) {
-      this.hanldeExceptions(error);
+      handleExceptions(error);
     }
   }
 
-  findAll() {
-    return `This action returns all pokemon`;
+  findAll(paginationDto: PaginationDto) {
+    
+    const { limit = 10, offset = 0 } = paginationDto;
+
+    return this.pokemonModel.find()
+      .limit(limit)
+      .skip(offset)
+      .sort({ no: 1 })
+      .select('-__v');
+
   }
 
   async findOne(term: string) {
@@ -64,7 +74,7 @@ export class PokemonService {
 
       return {...pokemon.toJSON(), ...updatePokemonDto};
     } catch (error) {
-      this.hanldeExceptions(error);
+      handleExceptions(error);
     }
   }
 
@@ -78,11 +88,4 @@ export class PokemonService {
     return;
   }
 
-  private hanldeExceptions(error: any) {
-    if (error.code === 11000) {
-      throw new BadRequestException(`Pokemon already exists in db ${JSON.stringify(error.keyValue)}`);
-    }
-
-    throw new InternalServerErrorException(`Can't create pokemon - check server logs ${error.message}`);
-  }
 }

@@ -10,7 +10,6 @@ import { SeedModule } from './seed/seed.module';
 @Module({
   imports: [
 
-
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),

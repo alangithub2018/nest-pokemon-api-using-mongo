@@ -11,15 +11,24 @@ sh
 yarn install
 ```
 3. Tener Nest CLI instalado
+
 sh
 ```
 npm i -g @nestjs/cli
 ```
 
 4. Levantar la base de datos
+
 sh
 ```
 docker-compose up -d
+```
+
+5. Reconstruir la base de datos con la semilla
+
+sh
+```
+http://localhost:3000/api/v2/seed
 ```
 
 ## Stack usado
