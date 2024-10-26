@@ -54,3 +54,11 @@ http://localhost:3000/api/v2/seed
 ```
 docker-compose -f docker-compose.prod.yaml --env-file .env.prod up --build
 ```
+
+# Notas
+Enforce Heroku redeployment with no changes
+
+```
+git commit --allow-empty -m "Trigger heroku deploy"
+git push heroku <master/main>
+```
